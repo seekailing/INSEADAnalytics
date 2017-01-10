@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="section-header">
+
+
+
+
+</div>
+
+
+<div id="section-daa" class="section level2">
+<h2>daa</h2>
+<p>title: “Exercise Set 1” author: “T. Evgeniou” output: html_document —</p>
+<p><br></p>
+<p>The purpose of this exercise is to become familiar with:</p>
+<ol style="list-style-type: decimal">
+<li>Basic statistics functions in R;</li>
+<li>Simple matrix operations;</li>
+<li>Simple data manipulations;</li>
+<li>The idea of functions as well as some useful customized functions provided.</li>
+</ol>
+<p>While doing this exercise we will also see how to generate replicable and customizable reports. For this purpose the exercise uses the R Markdown capabilities (see <a href="https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf">Markdown Cheat Sheet</a> or a <a href="http://rmarkdown.rstudio.com/authoring_basics.html">basic introduction to R Markdown</a>). These capabilities allow us to create dynamic reports. For example today’s date is 2017-01-10 (you need to see the .Rmd to understand that this is <em>not</em> a static typed-in date but it changes every time you compile the .Rmd - if the date changed of course).</p>
+<p>Before starting, make sure you have pulled the <a href="https://github.com/InseadDataAnalytics/INSEADAnalytics/tree/master/Exercises/Exerciseset1">exercise files</a> on your github repository (if you pull the course github repository you also get the exercise set files automatically). Moreover, make sure you are in the directory of this exercise. Directory paths may be complicated, and sometimes a frustrating source of problems, so it is recommended that you use these R commands to find out your current working directory and, if needed, set it where you have the main files for the specific exercise/project (there are other ways, but for now just be aware of this path issue). For example, assuming we are now in the “MYDIRECTORY/INSEADAnalytics” directory, we can do these:</p>
+<pre class="r"><code>getwd()
+setwd(&quot;Exercises/Exerciseset1/&quot;)
+list.files()</code></pre>
+<p><strong>Note:</strong> you can always use the <code>help</code> command in Rstudio to find out about any R function (e.g. type <code>help(list.files)</code> to learn what the R function <code>list.files</code> does).</p>
+<p>Let’s now see the exercise.</p>
+<p><strong>IMPORTANT:</strong> You should answer all questions by simply adding your code/answers in this document through editing the file ExerciseSet1.Rmd and then clicking on the “Knit HTML” button in RStudio. Once done, please post your .Rmd and html files in your github repository.</p>
+<hr>
+<hr>
+<div id="section-exercise-data" class="section level3">
+<h3>Exercise Data</h3>
+<p>We download daily prices (open, high, low, close, and adjusted close) and volume data of publicly traded companies and markets from the web (e.g. Yahoo! or Google, etc). This is done by sourcing the file data.R as well as some helper functions in herpersSet1.R which also installs a number of R libraries (hence the first time you run this code you will see a lot of red color text indicating the <em>download</em> and <em>installation</em> process):</p>
+<pre class="r"><code>source(&quot;helpersSet1.R&quot;)
+source(&quot;dataSet1.R&quot;)</code></pre>
+<p>[1] “ticker SPY …” [1] “ticker AAPL …”</p>
+<p>For more information on downloading finance data from the internet as well as on finance related R tools see these starting points (there is a lot more of course available):</p>
+<ul>
+<li><a href="http://www.r-bloggers.com/r-code-yahoo-finance-data-loading/">Some finance data loading tools</a></li>
+<li><a href="http://www.r-bloggers.com/rblpapi-connecting-r-to-bloomberg/">Connecting directly to Bloomberg</a></li>
+<li><a href="http://www.r-bloggers.com/plotting-time-series-in-r-using-yahoo-finance-data/">Some time series plot tools</a></li>
+<li><a href="https://cran.r-project.org/web/views/Finance.html">Various finance code links</a></li>
+<li><a href="http://blog.revolutionanalytics.com/2013/12/quantitative-finance-applications-in-r.html">More links</a></li>
+<li><a href="http://www.r-bloggers.com/financial-data-accessible-from-r-part-iv/">Even more links</a></li>
+<li>Of course endless available code (e.g. like this one that seems to <a href="https://github.com/gsee/qmao/blob/master/R/getCalendar.R">get companies’ earnings calendars</a>)</li>
+</ul>
+<div id="section-optional-question" class="section level4">
+<h4>Optional Question</h4>
+<ol style="list-style-type: decimal">
+<li>Can you find some interesting finance related R package or github repository? **Your Answers here: source(quantmod) Allows users to easily load this data into R by specifying the the same ticker symbol that is used in these two web sources.After installing the package, using it is quite simple and straightforward. For example, to retrieve all available data for the PowerShares QQQ Nasdaq 100 Index ETF, one enters the following R command:</li>
+</ol>
+<p>getSymbols(“QQQ”)</p>
+<p>The data set is returned to the R session in the form of an xts object with the name QQQ. To check the contents, the head(.) and tail(.) R functions are useful. Website:<a href="http://blog.revolutionanalytics.com/2013/12/quantitative-finance-applications-in-r.html" class="uri">http://blog.revolutionanalytics.com/2013/12/quantitative-finance-applications-in-r.html</a> ** <br> <br></p>
+<hr>
+<hr>
+</div>
+</div>
+<div id="section-part-i-statistics-of-sp-daily-returns" class="section level3">
+<h3>Part I: Statistics of S&amp;P Daily Returns</h3>
+<p>We have 4028 days of data, starting from 2001-01-03 until 2017-01-06. Here are some basic statistics about the S&amp;P returns:</p>
+<ol style="list-style-type: decimal">
+<li>The cumulative returns of the S&amp;P index during this period is 118.1%.</li>
+<li>The average daily returns of the S&amp;P index during this period is 0.029%;</li>
+<li>The standard deviation of the daily returns of the S&amp;P index during this period is 1.233%;</li>
+</ol>
+<p>Here are returns of the S&amp;P in this period (note the use of the helper function pnl_plot - defined in file helpersSet1.R):</p>
+<p><img src="rmd_4557f8a3c7e18e59dcd3a8b230a1fe86_files/figure-html/unnamed-chunk-3-1.png" width="576" style="display: block; margin: auto;" /></p>
+<div id="section-questions" class="section level4">
+<h4>Questions</h4>
+<ol style="list-style-type: decimal">
+<li>Notice that the code also downloads the returns of Apple during the same period. Can you explain where this is done in the code (including the .R files used)?</li>
+<li>What are the cumulative, average daily returns, and the standard deviation of the daily returns of Apple in the same period?</li>
+<li><em>(Extra points)</em> What if we want to also see the returns of another company, say Yahoo!, in the same period? Can you get that data and report the statistics for Yahoo!’s stock, too?</li>
+</ol>
+<p><strong>Your Answers here:</strong> 1. We call out Apple as one of the data to pull when we define the variable mytickers in dataSet1.R Row 8 and we specificy AAPL 2. For Apple: Cummulative returns is 595.5%, Avg daily returns is 0.148% and Standard Deviation is 2.39% 3. Yes, we can by adding Yahoo ticker Yahoo! in the vector of mytickers variable. mytickers will therefore be c(“SPY”, “AAPL”, “YHOO”) <br></p>
+<hr>
+<hr>
+</div>
+</div>
+<div id="section-part-ii-simple-matrix-manipulations" class="section level3">
+<h3>Part II: Simple Matrix Manipulations</h3>
+<p>For this part of the exercise we will do some basic manipulations of the data. First note that the data are in a so-called matrix format. If you run these commands in RStudio (use help to find out what they do) you will see how matrices work:</p>
+<pre class="r"><code>class(StockReturns)
+dim(StockReturns)
+nrow(StockReturns)
+ncol(StockReturns)
+StockReturns[1:4,]
+head(StockReturns,5)
+tail(StockReturns,5) </code></pre>
+<p>We will now use an R function for matrices that is extremely useful for analyzing data. It is called <em>apply</em>. Check it out using help in R.</p>
+<p>For example, we can now quickly estimate the average returns of S&amp;P and Apple (of course this can be done manually, too, but what if we had 500 stocks - e.g. a matrix with 500 columns?) and plot the returns of that 50-50 on S&amp;P and Apple portfolio:</p>
+<p><img src="rmd_4557f8a3c7e18e59dcd3a8b230a1fe86_files/figure-html/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>We can also transpose the matrix of returns to create a new “horizontal” matrix. Let’s call this matrix (variable name) transposedData. We can do so using this command: <code>transposedData = t(StockReturns)</code>.</p>
+<div id="section-questions-1" class="section level4">
+<h4>Questions</h4>
+<ol style="list-style-type: decimal">
+<li>What R commands can you use to get the number of rows and number of columns of the new matrix called transposedData?</li>
+<li>Based on the help for the R function <em>apply</em> (<code>help(apply)</code>), can you create again the portfolio of S&amp;P and Apple and plot the returns in a new figure below?</li>
+</ol>
+<p><strong>Your Answers here:</strong> 1. Number of Row nrow(transposeData). Number of Columns ncol(transposeData) 2. portfolio1 = apply(transposedData,2,mean) names(portfolio1)&lt;-colnames(transposedData) pnl_plot(portfolio1)</p>
+<p><br> <br></p>
+<hr>
+<hr>
+</div>
+</div>
+<div id="section-part-iii-reproducibility-and-customization" class="section level3">
+<h3>Part III: Reproducibility and Customization</h3>
+<p>This is an important step and will get you to think about the overall process once again.</p>
+<div id="section-questions-2" class="section level4">
+<h4>Questions</h4>
+<ol style="list-style-type: decimal">
+<li>We want to re-do all this analysis with data since 2001-01-01: what change do we need to make in the code (hint: all you need to change is one line - exactly 1 number! - in data.R file), and how can you get the new exercise set with the data since 2001-01-01?</li>
+<li><em>(Extra Exercise)</em> Can you get the returns of a few companies and plot the returns of an equal weighted portfolio with those companies during some period you select?</li>
+</ol>
+<p><strong>Your Answers here:</strong> 1. In line 9 of DataSet1.R, change start date to 2000-12-30</p>
+<p><br></p>
+<hr>
+<hr>
+</div>
+</div>
+<div id="section-part-iv-readwrite-.csv-files" class="section level3">
+<h3>Part IV: Read/Write .CSV files</h3>
+<p>Finally, one can read and write data in .CSV files. For example, we can save the first 20 days of data for S&amp;P and Apple in a file using the command:</p>
+<pre class="r"><code>write.csv(StockReturns[1:20,c(&quot;SPY&quot;,&quot;AAPL&quot;)], file = &quot;twentydays.csv&quot;, row.names = TRUE, col.names = TRUE) </code></pre>
+<p>Do not get surpsised if you see the csv file in your directories suddenly! You can then read the data from the csv file using the read.csv command. For example, this will load the data from the csv file and save it in a new variable that now is called “myData”:</p>
+<pre class="r"><code>myData &lt;- read.csv(file = &quot;twentydays.csv&quot;, header = TRUE, sep=&quot;;&quot;)</code></pre>
+<p>Try it!</p>
+<div id="section-questions-3" class="section level4">
+<h4>Questions</h4>
+<ol style="list-style-type: decimal">
+<li>Once you write and read the data as described above, what happens when you run this command in the console of the RStudio: <code>sum(myData != StockReturns[1:20,])</code></li>
+<li><em>(Extra exercise)</em> What do you think will happen if you now run this command, and why:</li>
+</ol>
+<pre class="r"><code>myData + StockReturns[1:40,])</code></pre>
+<p><strong>Your Answers here:</strong> 1. Firstly, the command to run myData should indicate that the data in CSV file has to be separated by , not ; When that is done, executing the summation funcation will lead to a number of 60. This is because myData is a 20<em>3 matrix while 1st 20 rows of StockReturns is a 20</em>2 matrix and data in the corresponding coordinates of these matrixs are not identical. Therefore when the operator notequalsto is applied, it return as TRUE (value=1) for all cells. 2.It results in an Error message because the first column of myData representing the date is a character argument that is commanded to be added to a numeric argument. To do a proper summation, the 2nd and 3rd column of myData need to be selected ( myData[,2:3]) <br> <br></p>
+<hr>
+<hr>
+</div>
+</div>
+<div id="section-extra-question" class="section level3">
+<h3>Extra Question</h3>
+<p>Can you now load another dataset from some CSV file and report some basic statistics about that data?</p>
+<p><br></p>
+</div>
+<div id="section-creating-interactive-documents" class="section level3">
+<h3>Creating Interactive Documents</h3>
+<p>Finally, just for fun, one can add some interactivity in the report using <a href="http://rmarkdown.rstudio.com/authoring_shiny.html">Shiny</a>.All one needs to do is set the eval flag of the code chunk below (see the .Rmd file) to “TRUE”, add the line “runtime: shiny” at the very begining of the .Rmd file, make the markdown output to be “html_document”, and then press “Run Document”.</p>
+<pre class="r"><code>sliderInput(&quot;startdate&quot;, &quot;Starting Date:&quot;, min = 1, max = length(portfolio), 
+            value = 1)</code></pre>
+<div class="form-group shiny-input-container">
+<label class="control-label" for="startdate">Starting Date:</label>
+<input class="js-range-slider" id="startdate" data-min="1" data-max="4028" data-from="1" data-step="50" data-grid="true" data-grid-num="8.94888888888889" data-grid-snap="false" data-keyboard="true" data-keyboard-step="1.24161907126893" data-drag-interval="true" data-data-type="number" data-prettify-separator=","/>
+</div>
+<pre class="r"><code>sliderInput(&quot;enddate&quot;, &quot;End Date:&quot;, min = 1, max = length(portfolio), 
+            value = length(portfolio))</code></pre>
+<div class="form-group shiny-input-container">
+<label class="control-label" for="enddate">End Date:</label>
+<input class="js-range-slider" id="enddate" data-min="1" data-max="4028" data-from="4028" data-step="50" data-grid="true" data-grid-num="8.94888888888889" data-grid-snap="false" data-keyboard="true" data-keyboard-step="1.24161907126893" data-drag-interval="true" data-data-type="number" data-prettify-separator=","/>
+</div>
+<pre class="r"><code>renderPlot({
+  pnl_plot(portfolio[input$startdate:input$enddate])
+})</code></pre>
+<div id="outa34e7cef96a4373c" class="shiny-plot-output" style="width: 100% ; height: 400px"></div>
+<p><br></p>
+<hr>
+<hr>
+</div>
+<div id="section-endless-explorations-optional-homework" class="section level3">
+<h3>Endless explorations (optional homework)</h3>
+<p>This is a <a href="http://poseidon01.ssrn.com/delivery.php?ID=851091091009083082092113118102076099034023058067019062072066007100008111081022102123034016097101060099003106125099002090116089026058012038004030005113111105079028059062024121067073126072090091089069014121102110107075029090001011087028011082124103085&amp;EXT=pdf">recent research article</a> that won an award in 2016. Can you implement a simple strategy as in Figure 1 of this paper? You may find these R commands useful: <code>names</code>, <code>which</code>, <code>str_sub</code>,<code>diff</code>,<code>as.vector</code>, <code>length</code>, <code>pmin</code>, <code>pmax</code>, <code>sapply</code>, <code>lapply</code>,<code>Reduce</code>,<code>unique</code>, <code>as.numeric</code>, <code>%in%</code> <img src="rmd_4557f8a3c7e18e59dcd3a8b230a1fe86_files/simpletrade.png" alt="A Simple Trading Startegy" /></p>
+<p>What if you also include information about bonds? (e.g. download the returns of the the ETF with ticker “TLT”) Is there any relation between stocks and bonds?</p>
+<p><strong>Have fun</strong></p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
